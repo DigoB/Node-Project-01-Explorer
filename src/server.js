@@ -11,7 +11,7 @@ app.get("/message/:id/:user", (request, response) => {
     const { id, user } = request.params
 
     response.send(`Id da requisição: ${id}.
-    Para o usuário: ${user}`)
+    Nome do usuário: ${user}`)
 })
 
 /** Query Params, podemos atribuir parametros de pesquisa no endpoint sem necessáriamente
