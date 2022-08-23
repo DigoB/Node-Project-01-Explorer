@@ -1,17 +1,35 @@
+require("express-async-errors")
+
+const AppError = require("./utils/AppError")
+
 const express = require("express");
 
-const routes = require("./routes")
+const routes = require("./routes");
+const { response } = require("express");
 
 const app = express();
 
-// O Express precisa saber qual o padrao de dados a ser usado
 app.use(express.json())
 
-/** Quando houver uma requisição para o servidor, vai cair aqui nesse método das rotas
- * Ele foi definido acima para buscar as rotas na pasta ./routes, como não defini qual dos 
- * arquivos a ser buscado, o default é ele procurar pelo index.js
- */
 app.use(routes)
+
+app.use(( error, request, response, next) => {
+    /** Verificação pelo AppError, valida se o erro vem de alguma informação incorreta do cliente */
+    if(error instanceof AppError) {
+        return response.status(error.statusCode).json({
+            status: "error",
+            message: error.message
+        })
+    }
+
+    console.error(error)
+    
+    /** Caso não seja erro do lado do cliente, está retornando um 500 para erro do servidor */
+    return response.status(500).json({
+        status: "error",
+        message: "Internal server error"
+    })
+})
 
 const PORT = 3333;
 app.listen(PORT, () => {
