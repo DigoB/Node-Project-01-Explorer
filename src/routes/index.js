@@ -9,6 +9,6 @@ const router = Router()
  * Ao encontrar o endereço, o use() vai direcionar para a rota que foi definida
  * no require() acima
  */
-router.use("/users", usersRoutes)
+router.use("/", usersRoutes)
 
 module.exports = usersRoutes
