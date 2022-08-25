@@ -12,10 +12,6 @@ function middleware(request, response, next) {
 
     console.log("Voce passou pelo midleware")
     
-    if(!request.body.isAdmin) {
-        return response.status(401).json({ message: "User unauthorized"})
-    }
-    
     next()
 }
 
