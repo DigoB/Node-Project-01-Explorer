@@ -1,6 +1,6 @@
 const {hash, compare} = require("bcryptjs")
 const AppError = require("../utils/AppError")
-const sqliteConnection = require("../../database/sqlite")
+const sqliteConnection = require("./../database/sqlite")
 
 
 
@@ -40,8 +40,8 @@ class UsersController {
             throw new AppError("Email already registered")
         }
 
-        user.name = name
-        user.email = email
+        user.name = name ?? user.name
+        user.email = email ?? user.email
 
         if(password && !oldPassword) {
             throw new AppError("Latest password must be informed to change for a new one")
@@ -62,9 +62,9 @@ class UsersController {
             name = ?,
             email = ?,
             password = ?,
-            updated_at = ?
+            updated_at = DATETIME('now')
             WHERE id = ?`,
-            [user.name, user.email, user.password, new Date(), id]
+            [user.name, user.email, user.password, id]
         )
 
         return response.status(200).json()
